@@ -9,10 +9,9 @@ typedef struct			s_rooms
 	char				*name;
 	int					x;
 	int 				y;
-	int 				ant;
 	int 				stat;
 	int					lenmove;
-	char 				*prev;
+	struct s_rooms		*prev;
 	struct s_rooms		*next;
 }						t_rooms;
 
@@ -31,10 +30,24 @@ typedef struct			s_var
 	t_rooms				*room;
 	int 				ants;
 	int					start;
+	int					error;
+	int					grup_valid;
+	int					start_count;
+	int					end_count;
 }						t_var;
 
-int						inst_cmp(char *s);
-void					creat_list(char *s, t_var *var, int cmp);
+int						read_instruction_ants(char *s, t_var *var);
+
+int						read_instruction_room(char *s, t_var *var);
+int						ft_newlist_room(char **s, t_rooms **room, int start);
+
+int read_instruction_move(char *s, t_var *var);
+int		ft_newlist_move(char **s, t_move **inst);
+
+int ft_atoi_lem(char *str);
+void free_fail(char **split);
+
+
 int						read_instruction(t_var *var);
 void					dijkstra(t_var *var);
 
