@@ -76,7 +76,7 @@ static int if_space(char **split)
 static int count_split_and_free(char **split)
 {
 	int count;
-	char **split2;
+
 	count = 0;
 	while (split[count] != 0)
 		count++;

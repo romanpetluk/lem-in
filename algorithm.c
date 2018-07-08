@@ -17,6 +17,11 @@ int		find_start(t_rooms *troom, t_rooms **start)
 	return (1);
 }
 
+int		move_room_status(t_rooms *room, t_move *move)
+{
+
+}
+
 int		find_move(t_rooms *rooms,t_rooms *start, t_move *move)
 {
 	t_move		*tmove;

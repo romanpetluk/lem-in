@@ -6,7 +6,7 @@
 #    By: rpetluk <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/04 09:02:32 by rpetluk           #+#    #+#              #
-#    Updated: 2018/04/04 10:18:22 by rpetluk          ###   ########.fr        #
+#    Updated: 2018/07/08 14:24:40 by rpetluk          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -94,4 +94,5 @@ FT_OBJF = 						\
 			ft_printf_unimask.o   \
 			ft_printf_auxiliary.o
 FT_OBJS		:= $(addprefix $(FT_DIR)/,$(FT_OBJF))
+FT_SRCS		:= $(FT_OBJS:%.o=%.c)
 FT_DEPS		:= $(FT_DIR)/libft.h

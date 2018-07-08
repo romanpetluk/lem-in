@@ -19,7 +19,7 @@ static int		ft_init(t_var **var)
 	return (1);
 }
 
-void way_list(t_way *way, int status)
+void way_list(t_way *way)
 {
 	while (way)
 	{
@@ -81,6 +81,7 @@ int main(void)
 	t_way *way;
 	t_way *way1;
 
+	way1 = NULL;
 	way = NULL;
 	ft_init(&var);
 	read_instruction(var);
@@ -101,7 +102,7 @@ int main(void)
 	algorithm(var);
 	add_way(var->room, &way);
 	reset_stat_room(var->room);
-	way_list(way, 1);
+	way_list(way);
 
 	algorithm(var);
 
