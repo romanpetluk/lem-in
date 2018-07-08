@@ -101,6 +101,7 @@ int repeat_move(char **split, t_move *move)
 			return (0);
 		move = move->next;
 	}
+	ft_printf("\n\n");
 	return (1);
 }
 

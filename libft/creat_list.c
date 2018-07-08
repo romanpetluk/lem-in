@@ -70,23 +70,6 @@ int		ft_newlist_room(char **s, t_rooms **room, int start)
 	return (1);
 }
 
-int		ft_newlist_way(t_way **way)
-{
-	t_way		*new;
-
-	if (!(new = (t_way *)malloc(sizeof(t_way))))
-		return (-1);
-	new->room = NULL;
-	new->next_room = NULL;
-	new->next_way = NULL;
-	new->stat = 0;
-	new->distance = 0;
-	if (*way)
-		new->next_room = *way;
-	*way = new;
-	return (1);
-}
-
 //int		ft_newlist_room(char **s, t_rooms **room, int start)
 //{
 //	t_rooms		*new;

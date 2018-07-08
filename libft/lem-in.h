@@ -2,7 +2,7 @@
 #ifndef LEM_IN_H
 #define LEM_IN_H
 
-# include "libft/libft.h"
+# include "../libft/libft.h"
 
 typedef struct			s_rooms
 {
@@ -13,6 +13,7 @@ typedef struct			s_rooms
 	int					lenmove;
 	struct s_rooms		*prev;
 	struct s_rooms		*next;
+	//t_rooms				*room;
 }						t_rooms;
 
 typedef struct			s_move
@@ -36,15 +37,6 @@ typedef struct			s_var
 	int					end_count;
 }						t_var;
 
-typedef struct			s_way
-{
-	int 				stat;
-	int					distance;
-	t_rooms				*room;
-	struct s_way		*next_room;
-	struct s_way		*next_way;
-}						t_way;
-
 int						read_instruction_ants(char *s, t_var *var);
 
 int						read_instruction_room(char *s, t_var *var);
@@ -56,7 +48,6 @@ int						ft_newlist_move(char **s, t_move **inst);
 int						ft_atoi_lem(char *str);
 void					free_fail(char **split);
 
-int						ft_newlist_way(t_way **way);
 
 int						read_instruction(t_var *var);
 int						algorithm(t_var *var);

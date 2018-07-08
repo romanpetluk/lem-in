@@ -82,6 +82,7 @@ int read_instruction(t_var *var)
 		else if (var->grup_valid == 1 && var->error == 0)
 		{
 			read_instruction_room(s, var);
+			//ft_printf("grup == %d\n", var->grup_valid);
 		}
 		if (var->grup_valid == 2 && !var->start && var->error > -1)
 		{
