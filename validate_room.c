@@ -92,9 +92,9 @@ int read_instruction_room(char *s, t_var *var)
 		ft_atoi(split[1]);
 	else
 		return (var->error = -1);
-	if (cmp_name(var->room, split[0]))
+	if (cmp_name(var->rooms, split[0]))
 		return (var->error = -1);
-	ft_newlist_room(split, &(var->room), var->start);
+	ft_newlist_room(split, &(var->rooms), var->start);
 	var->start = 0;
 	return (0);
 }

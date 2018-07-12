@@ -18,6 +18,8 @@ NAME := lem-in
 
 GCC := gcc -Wall -Wextra -Werror
 
+DEPS	:= lem-in.h
+
 OBJS_DIR := obj
 
 INCLUDES := -I.

@@ -31,19 +31,6 @@ static void free_failn(char **split, int count)
 	split = NULL;
 }
 
-static int		cmp_name(t_rooms *room, char *s)
-{
-	while (room)
-	{
-		if (ft_strcmp(room->name, s) == 0)
-		{
-			return (0);
-		}
-		room = room->next;
-	}
-	return (1);
-}
-
 static int if_space(char **split)
 {
 	int i;
@@ -91,17 +78,41 @@ static int count_split_and_free(char **split)
 	return (-1);
 }
 
-int repeat_move(char **split, t_move *move)
+int repeat_move(t_move *move, char *r_name1, char *r_name2)
 {
 	while (move)
 	{
-		if (ft_strcmp(split[0], move->name) == 0 && ft_strcmp(split[1], move->name_next) == 0)
+		if (r_name1 == move->name && r_name2 == move->name_next)
 			return (0);
-		if (ft_strcmp(split[1], move->name) == 0 && ft_strcmp(split[0], move->name_next) == 0)
+		if (r_name2 == move->name && r_name1 == move->name_next)
 			return (0);
 		move = move->next;
 	}
 	return (1);
+}
+
+static int valid_move(t_move **moves, t_rooms *room, char **split)
+{
+	char *r_name1;
+	char *r_name2;
+
+	r_name1 = NULL;
+	r_name2 = NULL;
+	while (room)
+	{
+		if (ft_strcmp(room->name, split[0]) == 0)
+			r_name1 = room->name;
+		else if (ft_strcmp(room->name, split[1]) == 0)
+			r_name2 = room->name;
+		if (r_name1 && r_name2)
+		{
+			if (repeat_move(*moves, r_name1, r_name2))
+			ft_newlist_move(moves, r_name1, r_name2);
+			return (0);
+		}
+		room = room->next;
+	}
+	return (-1);
 }
 
 int read_instruction_move(char *s, t_var *var)
@@ -111,11 +122,7 @@ int read_instruction_move(char *s, t_var *var)
 	split = ft_strsplit(s, '-');
 	if (count_split_and_free(split))
 		return (var->error = -1);
-	if (cmp_name(var->room, split[0]))
+	if (valid_move(&(var->moves), var->rooms, split))
 		return (var->error = -1);
-	if (cmp_name(var->room, split[1]))
-		return (var->error = -1);
-	if (repeat_move(split, var->inst))
-		ft_newlist_move(split, &(var->inst));
 	return (0);
 }

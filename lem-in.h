@@ -10,6 +10,7 @@ typedef struct			s_rooms
 	int					x;
 	int 				y;
 	int 				stat;
+	int					start;
 	int					lenmove;
 	struct s_rooms		*prev;
 	struct s_rooms		*next;
@@ -19,15 +20,15 @@ typedef struct			s_move
 {
 	char				*name;
 	char 				*name_next;
-	int 				stat;
+	//int 				stat;
 	int					distance;
 	struct s_move		*next;
 }						t_move;
 
 typedef struct			s_var
 {
-	t_move				*inst;
-	t_rooms				*room;
+	t_move				*moves;
+	t_rooms				*rooms;
 	int 				ants;
 	int					start;
 	int					error;
@@ -48,10 +49,10 @@ typedef struct			s_way
 int						read_instruction_ants(char *s, t_var *var);
 
 int						read_instruction_room(char *s, t_var *var);
-int						ft_newlist_room(char **s, t_rooms **room, int start);
+int						ft_newlist_room(char **s, t_rooms **room, int comand);
 
 int						read_instruction_move(char *s, t_var *var);
-int						ft_newlist_move(char **s, t_move **inst);
+int						ft_newlist_move(t_move **moves, char *r_name1, char *r_name2);
 
 int						ft_atoi_lem(char *str);
 void					free_fail(char **split);
