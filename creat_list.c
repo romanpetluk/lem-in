@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 int				ft_newlist_move(t_move **moves, char *r_name1, char *r_name2)
 {

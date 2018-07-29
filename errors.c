@@ -1,59 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   errors.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpetluk <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/07/29 12:43:09 by rpetluk           #+#    #+#             */
+/*   Updated: 2018/07/29 12:43:11 by rpetluk          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
-static void	ft_free_all(t_var *var)
+static char	*ft_errors_def(int errors)
 {
-	t_move *tmoov;
-	t_rooms *troom;
-
-	if (var->moves)
-	{
-		while (var->moves)
-		{
-			tmoov = var->moves->next;
-			var->moves->name_next = NULL;
-			var->moves->name = NULL;
-			free (var->moves);
-			var->moves = tmoov;
-		}
-	}
-	if (var->rooms)
-	{
-		while (var->rooms)
-		{
-			free(var->rooms->name);
-			troom = var->rooms->next;
-			free(var->rooms);
-			var->rooms = troom;
-		}
-	}
-	free(var);
-}
-
-void ft_free_way(t_way *way, t_var *var)
-{
-	t_way	*tway;
-	t_way	*temp;
-
-	if (var->bon.way)
-		way_list(way);
-	while (way)
-	{
-		tway = way;
-		way = way->next_way;
-		while (tway)
-		{
-			temp = tway->next_room;
-			free (tway);
-			tway = temp;
-		}
-	}
-	ft_free_all(var);
-}
-
-static char *ft_errors_def(int errors)
-{
-	char *temp;
+	char	*temp;
 
 	temp = NULL;
 	if (errors == -1)
@@ -79,9 +40,9 @@ static char *ft_errors_def(int errors)
 	return (temp);
 }
 
-static char *ft_errors_def2(int errors)
+static char	*ft_errors_def2(int errors)
 {
-	char *temp;
+	char	*temp;
 
 	temp = NULL;
 	if (errors == -11)
@@ -103,15 +64,14 @@ static char *ft_errors_def2(int errors)
 	return (temp);
 }
 
-
-void ft_errors(t_var *var)
+void		ft_errors(t_var *var)
 {
-	char *s;
+	char	*s;
 
 	s = NULL;
 	if (var->error && var->bon.error_key == 0)
 		ft_printf("ERROR\n");
-	else if (var->error)
+	else
 	{
 		if (var->error > -11)
 			s = ft_errors_def(var->error);

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 static int	validate_name_hyphen(char *split)
 {
@@ -112,6 +112,5 @@ int			read_instruction_room(char *s, t_var *var)
 	if (cmp_name(var->rooms, split))
 		return (var->error = -8);
 	ft_newlist_room(split, &(var->rooms), var->comand);
-	var->comand = 0;
-	return (0);
+	return (var->comand = 0);
 }

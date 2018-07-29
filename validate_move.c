@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 static int	if_space(char **split)
 {
@@ -97,8 +97,15 @@ static int	valid_move(t_move **moves, t_rooms *room, char **split)
 int			read_instruction_move(char *s, t_var *var)
 {
 	char		**split;
+	char		*temp;
 
 	split = ft_strsplit(s, '-');
+	if (split[0])
+	{
+		temp = ft_strtrim(split[0]);
+		free(split[0]);
+		split[0] = temp;
+	}
 	if (count_split_and_free(split))
 		return (var->error = -14);
 	if (valid_move(&(var->moves), var->rooms, split))

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 static int		ft_init(t_var **var)
 {
@@ -118,5 +118,4 @@ int				main(int argc, char **argv)
 	write_txt(var->txt);
 	ants_move(var->ants, way, var->bon.count_iter);
 	ft_free_way(way, var);
-	//system("leaks lem-in");
 }

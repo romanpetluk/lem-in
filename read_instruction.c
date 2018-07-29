@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 static int	check_start(char *s, t_var *var)
 {
@@ -90,9 +90,11 @@ static int	validate_str(char *s, t_var *var)
 int			read_instruction(t_var *var)
 {
 	char	*s;
+	char	*ssave;
 
-	while (get_next_line(0, &s))
+	while (get_next_line(0, &ssave))
 	{
+		s = ft_strtrim(ssave);
 		var->bon.count_line++;
 		if (var->comand && var->grup_valid == 2)
 			var->error = -13;
@@ -104,12 +106,10 @@ int			read_instruction(t_var *var)
 			read_instruction_room(s, var);
 		else if (!var->error && var->grup_valid == 2)
 			read_instruction_move(s, var);
+		free(s);
 		if (var->error)
-		{
 			ft_errors(var);
-			var->error = 0;
-		}
-		add_string_txt(s, &var->txt);
+		add_string_txt(ssave, &var->txt);
 	}
 	return (0);
 }

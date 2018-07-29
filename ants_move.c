@@ -10,16 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 static int	value_move_way(t_way *way, int ants)
 {
-	t_way *tway;
-	int distance;
-	int i;
+	t_way	*tway;
+	int		distance;
+	int		i;
 
 	i = 0;
-	//ft_printf("\n%d\n\n",ants);
 	if (!way->next_way)
 		return (1);
 	tway = way;

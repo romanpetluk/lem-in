@@ -10,18 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
-int			ft_atoi_lem(char *str, int n)
+static int	ft_atoi_lem(char *str, int n, int i)
 {
-	int		i;
 	long	re;
-
 
 	if (str)
 	{
 		re = 0;
-		i = 0;
 		if (str[i] == '-')
 			n = -1;
 		if (str[i] == '-' || str[i] == '+')
@@ -44,7 +41,7 @@ int			ft_atoi_lem(char *str, int n)
 
 int			read_instruction_ants(char *s, t_var *var)
 {
-	var->ants = ft_atoi_lem(s, 1);
+	var->ants = ft_atoi_lem(s, 1, 0);
 	if (var->ants < 0)
 	{
 		return (var->error = -1);

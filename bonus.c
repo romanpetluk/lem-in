@@ -1,13 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   bonus.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpetluk <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/07/29 12:12:48 by rpetluk           #+#    #+#             */
+/*   Updated: 2018/07/29 12:12:49 by rpetluk          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
-void way_list(t_way *way)
+void		way_list(t_way *way)
 {
-	t_way *tway;
-	int count;
+	t_way	*tway;
+	int		count;
 
 	count = 0;
-
 	ft_printf("\n");
 	while (way)
 	{
@@ -27,7 +37,7 @@ void way_list(t_way *way)
 	ft_printf("\n");
 }
 
-static void	cmp_key(t_var *var,char *s)
+static void	cmp_key(t_var *var, char *s)
 {
 	if (!ft_strcmp(s, "-r"))
 		(var)->bon.error_key = 1;
@@ -46,9 +56,9 @@ static void	cmp_key(t_var *var,char *s)
 	}
 }
 
-void ft_bonus(t_var *var, int argc, char **argv)
+void		ft_bonus(t_var *var, int argc, char **argv)
 {
-	int i;
+	int		i;
 
 	i = 1;
 	while (argc > i)

@@ -18,7 +18,7 @@ NAME := lem-in
 
 GCC := gcc -Wall -Wextra -Werror -g
 
-DEPS	:= lem-in.h
+DEPS	:= lem_in.h
 
 OBJS_DIR := obj
 
@@ -26,7 +26,7 @@ INCLUDES := -I.
 
 OBJECTS_F :=	algorithm.o			\
            		creat_list.o		\
-           		lem-in.o			\
+           		lem_in.o			\
            		read_instruction.o	\
            		validate_ants.o		\
            		validate_move.o		\
@@ -35,6 +35,7 @@ OBJECTS_F :=	algorithm.o			\
            		validate.o          \
            		ants_move.o         \
            		remove_link.o       \
+           		ft_free.o           \
            		bonus.o
 
 OBJECTS  := $(OBJECTS_F:%.o=$(OBJS_DIR)/%.o)

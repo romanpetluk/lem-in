@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 static int		find_start(t_rooms *troom, t_rooms **start)
 {
@@ -27,10 +27,16 @@ static int		find_start(t_rooms *troom, t_rooms **start)
 	return (1);
 }
 
-//void find_move2(t_rooms *rooms,t_rooms *start, t_move *move)
-//{
-//
-//}
+static void		find_move2(t_rooms *troom, t_rooms *start, t_move *move)
+{
+	if (troom->lenmove > (move->distance + start->lenmove))
+	{
+		troom->lenmove = (move->distance + start->lenmove);
+		troom->prev = start;
+		if (troom->stat < 4)
+			troom->stat = 1;
+	}
+}
 
 static void		find_move(t_rooms *rooms, t_rooms *start, t_move *move)
 {
@@ -43,64 +49,17 @@ static void		find_move(t_rooms *rooms, t_rooms *start, t_move *move)
 		{
 			while (troom && troom->name != move->name_next)
 				troom = troom->next;
-			if (troom->lenmove > (move->distance + start->lenmove))
-			{
-				troom->lenmove = (move->distance + start->lenmove);
-				troom->prev = start;
-				if (troom->stat < 4)
-					troom->stat = 1;
-			}
+			find_move2(troom, start, move);
 		}
 		else if (move->name_next == start->name)
 		{
 			while (troom && troom->name != move->name)
 				troom = troom->next;
-			if (troom->lenmove > move->distance + start->lenmove)
-			{
-				troom->lenmove = (move->distance + start->lenmove);
-				troom->prev = start;
-				if (troom->stat < 4)
-					troom->stat = 1;
-			}
+			find_move2(troom, start, move);
 		}
 		move = move->next;
 	}
 }
-
-//static void		find_move(t_rooms *rooms, t_rooms *start, t_move *move)
-//{
-//	t_rooms		*troom;
-//
-//	while (move)
-//	{
-//		troom = rooms;
-//		if (move->name == start->name)
-//		{
-//			while (troom && troom->name != move->name_next)
-//				troom = troom->next;
-//			if (troom->lenmove > (move->distance + start->lenmove))
-//			{
-//				troom->lenmove = (move->distance + start->lenmove);
-//				troom->prev = start;
-//				if (troom->stat < 4)
-//					troom->stat = 1;
-//			}
-//		}
-//		else if (move->name_next == start->name)
-//		{
-//			while (troom && troom->name != move->name)
-//				troom = troom->next;
-//			if (troom->lenmove > move->distance + start->lenmove)
-//			{
-//				troom->lenmove = (move->distance + start->lenmove);
-//				troom->prev = start;
-//				if (troom->stat < 4)
-//					troom->stat = 1;
-//			}
-//		}
-//		move = move->next;
-//	}
-//}
 
 static int		find_l(t_rooms *rooms, t_rooms **room_l)
 {

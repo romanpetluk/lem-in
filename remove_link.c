@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <lem-in.h>
+#include "lem_in.h"
 
 static void	remove_link(t_move *pre, t_move *deleted, t_move **move)
 {
@@ -18,7 +18,7 @@ static void	remove_link(t_move *pre, t_move *deleted, t_move **move)
 		pre->next = deleted->next;
 	else
 		*move = deleted->next;
-	free (deleted);
+	free(deleted);
 	deleted = NULL;
 }
 
@@ -35,7 +35,8 @@ int			remove_start_finish(t_rooms *room, t_move **move)
 			remove_link(t, temp, move);
 			return (1);
 		}
-		else if (temp->name == room->prev->name && temp->name_next == room->name)
+		else if (temp->name == room->prev->name &&
+				temp->name_next == room->name)
 		{
 			remove_link(t, temp, move);
 			return (1);

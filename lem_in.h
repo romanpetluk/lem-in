@@ -1,6 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lem_in.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpetluk <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/07/29 12:45:57 by rpetluk           #+#    #+#             */
+/*   Updated: 2018/07/29 12:45:58 by rpetluk          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef LEM_IN_H
-#define LEM_IN_H
+# define LEM_IN_H
 
 # include "libft/libft.h"
 
@@ -27,8 +38,8 @@ typedef struct			s_rooms
 {
 	char				*name;
 	int					x;
-	int 				y;
-	int 				stat;
+	int					y;
+	int					stat;
 	int					start;
 	int					ants;
 	int					lenmove;
@@ -39,7 +50,7 @@ typedef struct			s_rooms
 typedef struct			s_move
 {
 	char				*name;
-	char 				*name_next;
+	char				*name_next;
 	int					distance;
 	struct s_move		*next;
 }						t_move;
@@ -52,7 +63,7 @@ typedef struct			s_txt
 
 typedef struct			s_way
 {
-	int 				ant;
+	int					ant;
 	int					distance;
 	t_rooms				*room;
 	struct s_way		*next_room;
@@ -74,7 +85,7 @@ typedef struct			s_var
 	t_rooms				*rooms;
 	t_txt				*txt;
 	t_bonus				bon;
-	int 				ants;
+	int					ants;
 	int					comand;
 	int					error;
 	int					grup_valid;
@@ -83,29 +94,24 @@ typedef struct			s_var
 }						t_var;
 
 int						read_instruction_ants(char *s, t_var *var);
-
 int						read_instruction_room(char *s, t_var *var);
 int						ft_newlist_room(char **s, t_rooms **room, int comand);
-
 int						read_instruction_move(char *s, t_var *var);
-int						ft_newlist_move(t_move **moves, char *r_name1, char *r_name2);
-
-int						ft_atoi_lem(char *str, int n);
+int						ft_newlist_move(t_move **moves, char *r_name1
+						, char *r_name2);
 void					free_fail(char **split);
 void					free_failn(char **split, int count);
-
 int						ft_newlist_way(t_way **way, t_rooms *room);
-
 int						read_instruction(t_var *var);
 int						algorithm(t_var *var);
 void					validate_instruction(t_var *var);
 void					ants_move(int ants, t_way *way, int iter);
-
 int						add_string_txt(char *s, t_txt **txt);
 void					ft_errors(t_var *var);
 int						remove_start_finish(t_rooms *room, t_move **move);
 void					ft_bonus(t_var *var, int argc, char **argv);
 void					ft_free_way(t_way *way, t_var *var);
 void					way_list(t_way *way);
+void					ft_free_all(t_var *var);
 
 #endif
