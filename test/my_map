@@ -1,0 +1,31 @@
+9
+##start
+#t1 0 0
+#t2 15 15
+A 1 1
+G 2 2
+##end
+H 3 3
+l 4 4
+M 5 5
+N 6 6
+B 8 8
+C 9 9
+D 10 10
+E 11 11
+F 12 12
+A-G
+G-H
+A-l
+l-M
+M-N
+N-H
+A-B
+B-C
+C-D
+D-E
+E-F
+F-H
+#A-t1
+#t1-t2
+#t2-H

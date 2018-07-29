@@ -1,9 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   algorithm.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpetluk <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/07/21 15:58:47 by rpetluk           #+#    #+#             */
+/*   Updated: 2018/07/21 16:01:14 by rpetluk          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "lem-in.h"
 
-int		find_start(t_rooms *troom, t_rooms **start)
+static int		find_start(t_rooms *troom, t_rooms **start)
 {
-
 	while (troom)
 	{
 		if (troom->stat == 3)
@@ -17,62 +27,82 @@ int		find_start(t_rooms *troom, t_rooms **start)
 	return (1);
 }
 
-int		room_status(t_rooms *room, t_move *move)
-{
-	if (tmove->name == start->name)
-	{
-		while (troom && troom->name != tmove->name_next)
-			troom = troom->next;
-		if (troom->lenmove > (tmove->distance + start->lenmove))
-		{
-			troom->lenmove = (tmove->distance + start->lenmove);
-			troom->prev = start;
-			if (troom->stat != 4)
-				troom->stat = 1;
-		}
-	}
-}
+//void find_move2(t_rooms *rooms,t_rooms *start, t_move *move)
+//{
+//
+//}
 
-int		find_move(t_rooms *rooms,t_rooms *start, t_move *move)
+static void		find_move(t_rooms *rooms, t_rooms *start, t_move *move)
 {
-	t_move		*tmove;
 	t_rooms		*troom;
 
-	tmove = move;
-	while (tmove)
+	while (move)
 	{
 		troom = rooms;
-		if (tmove->name == start->name)
+		if (move->name == start->name)
 		{
-			while (troom && troom->name != tmove->name_next)
+			while (troom && troom->name != move->name_next)
 				troom = troom->next;
-			if (troom->lenmove > (tmove->distance + start->lenmove))
+			if (troom->lenmove > (move->distance + start->lenmove))
 			{
-				troom->lenmove = (tmove->distance + start->lenmove);
+				troom->lenmove = (move->distance + start->lenmove);
 				troom->prev = start;
-				if (troom->stat != 4)
+				if (troom->stat < 4)
 					troom->stat = 1;
 			}
 		}
-		else if (tmove->name_next == start->name)
+		else if (move->name_next == start->name)
 		{
-			while (troom && troom->name != tmove->name)
+			while (troom && troom->name != move->name)
 				troom = troom->next;
-			if (troom->lenmove > tmove->distance + start->lenmove)
+			if (troom->lenmove > move->distance + start->lenmove)
 			{
-				troom->lenmove = (tmove->distance + start->lenmove);
+				troom->lenmove = (move->distance + start->lenmove);
 				troom->prev = start;
-				if (troom->stat != 4)
+				if (troom->stat < 4)
 					troom->stat = 1;
 			}
 		}
-		tmove = tmove->next;
-
+		move = move->next;
 	}
-	return (0);
 }
 
-int		find_l(t_rooms *rooms, t_rooms **room_l)
+//static void		find_move(t_rooms *rooms, t_rooms *start, t_move *move)
+//{
+//	t_rooms		*troom;
+//
+//	while (move)
+//	{
+//		troom = rooms;
+//		if (move->name == start->name)
+//		{
+//			while (troom && troom->name != move->name_next)
+//				troom = troom->next;
+//			if (troom->lenmove > (move->distance + start->lenmove))
+//			{
+//				troom->lenmove = (move->distance + start->lenmove);
+//				troom->prev = start;
+//				if (troom->stat < 4)
+//					troom->stat = 1;
+//			}
+//		}
+//		else if (move->name_next == start->name)
+//		{
+//			while (troom && troom->name != move->name)
+//				troom = troom->next;
+//			if (troom->lenmove > move->distance + start->lenmove)
+//			{
+//				troom->lenmove = (move->distance + start->lenmove);
+//				troom->prev = start;
+//				if (troom->stat < 4)
+//					troom->stat = 1;
+//			}
+//		}
+//		move = move->next;
+//	}
+//}
+
+static int		find_l(t_rooms *rooms, t_rooms **room_l)
 {
 	t_rooms		*l;
 	t_rooms		*troom;
@@ -98,73 +128,25 @@ int		find_l(t_rooms *rooms, t_rooms **room_l)
 	return (1);
 }
 
-int algorithm(t_var *var)
+int				algorithm(t_var *var)
 {
-
 	t_rooms		*room_l;
+	t_rooms		*temp;
 
-	while (find_l(var->rooms, &room_l))
+	temp = var->rooms;
+	while (find_l(temp, &room_l))
 	{
-			find_move(var->rooms, room_l, var->moves);
+		find_move(temp, room_l, var->moves);
+	}
+	while (temp->start != 4)
+		temp = temp->next;
+	if (temp->prev)
+	{
+		if (temp->prev->start == 3)
+		{
+			remove_start_finish(temp, &var->moves);
+		}
+		return (1);
 	}
 	return (0);
 }
-
-
-//int algorithm(t_var *var)
-//{
-//	t_move		*queue;
-//	t_rooms		*room_l;
-//
-//	while (find_start(var->room, &room_l))
-//	{
-//		ft_printf("room %s  ", room_l->name);
-//		if (var->room->stat != 4)
-//			find_move(var->room, room_l, var->inst);
-//		ft_printf("ok\n");
-//	}
-//	return (0);
-//}
-
-
-
-//int		find_move(t_rooms *rooms,t_rooms *start, t_move *move)
-//{
-//	t_move		*tmove;
-//	t_rooms		*troom;
-//
-//	tmove = move;
-//	while (tmove)
-//	{
-//		troom = rooms;
-//		if (tmove->stat == 0 && ft_strcmp(tmove->name, start->name) == 0)
-//		{
-//			while (troom && ft_strcmp(troom->name, tmove->name_next))
-//				troom = troom->next;
-//			if (troom->lenmove > (tmove->distance + start->lenmove))
-//			{
-//				troom->lenmove = (tmove->distance + start->lenmove);
-//				troom->prev = start;
-//				tmove->stat = 1;
-//				if (troom->stat != 4)
-//					troom->stat = 1;
-//			}
-//		}
-//		else if (tmove->stat == 0 && ft_strcmp(tmove->name_next, start->name) == 0)
-//		{
-//			while (troom && ft_strcmp(troom->name, tmove->name))
-//				troom = troom->next;
-//			if (troom->lenmove > tmove->distance + start->lenmove)
-//			{
-//				troom->lenmove = (tmove->distance + start->lenmove);
-//				troom->prev = start;
-//				tmove->stat = 1;
-//				if (troom->stat != 4)
-//					troom->stat = 1;
-//			}
-//		}
-//		tmove = tmove->next;
-//
-//	}
-//	return (0);
-//}

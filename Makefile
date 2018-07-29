@@ -16,7 +16,7 @@ include	libft/Libft.mk
 
 NAME := lem-in
 
-GCC := gcc -Wall -Wextra -Werror
+GCC := gcc -Wall -Wextra -Werror -g
 
 DEPS	:= lem-in.h
 
@@ -30,7 +30,12 @@ OBJECTS_F :=	algorithm.o			\
            		read_instruction.o	\
            		validate_ants.o		\
            		validate_move.o		\
-           		validate_room.o
+           		validate_room.o     \
+           		errors.o            \
+           		validate.o          \
+           		ants_move.o         \
+           		remove_link.o       \
+           		bonus.o
 
 OBJECTS  := $(OBJECTS_F:%.o=$(OBJS_DIR)/%.o)
 

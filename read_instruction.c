@@ -1,53 +1,62 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   read_instruction.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpetluk <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/07/21 16:09:10 by rpetluk           #+#    #+#             */
+/*   Updated: 2018/07/21 16:10:25 by rpetluk          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "lem-in.h"
 
-static int check_start(char *s, t_var *var)
+static int	check_start(char *s, t_var *var)
 {
-	int i;
+	int		i;
 
 	i = 7;
 	while (s[i] == ' ' || s[i] == '\0' || s[i] == '#')
 	{
 		if (s[i] == '\0' || s[i] == '#')
 		{
-			if (var->start == 0 && var->start_count == 0)
-			{
-				var->start = 3;
-				var->start_count = 1;
-				return (0);
-			}
-			else
-				return (var->error = -1);
+			if (var->start_count != 0)
+				return (var->error = -9);
+			if (var->comand != 0)
+				return (var->error = -11);
+			var->comand = 3;
+			var->start_count = 1;
+			return (0);
 		}
 		i++;
 	}
-	return (var->error = -1);
+	return (0);
 }
 
-static int check_end(char *s, t_var *var)
+static int	check_end(char *s, t_var *var)
 {
-	int i;
+	int		i;
 
 	i = 5;
 	while (s[i] == ' ' || s[i] == '\0' || s[i] == '#')
 	{
 		if (s[i] == '\0' || s[i] == '#')
 		{
-			if (var->start == 0 && var->end_count == 0)
-			{
-				var->start = 4;
-				var->end_count = 1;
-				return (0);
-			}
-			else
-				return (var->error = -1);
+			if (var->end_count != 0)
+				return (var->error = -10);
+			if (var->comand != 0)
+				return (var->error = -11);
+			var->comand = 4;
+			var->end_count = 1;
+			return (0);
 		}
 		i++;
 	}
 	return (var->error = -1);
 }
 
-int check_comment_adn_command(char *s, t_var *var)
+static int	check_comment_adn_command(char *s, t_var *var)
 {
 	if (ft_strncmp(s, "##start", 7) == 0)
 	{
@@ -59,38 +68,48 @@ int check_comment_adn_command(char *s, t_var *var)
 		if (check_end(s, var))
 			return (-1);
 	}
-	if (s[0] == '#')
-	{
-		free(s);
-		s = NULL;
-		return (1);
-	}
+	if (var->comand && var->grup_valid == 0)
+		var->error = -12;
 	return (0);
 }
 
-int read_instruction(t_var *var)
+static int	validate_str(char *s, t_var *var)
+{
+	int		i;
+
+	i = 0;
+	while (s[i] == ' ')
+		i++;
+	if (s[i] == '\0')
+		return (var->error = -3);
+	else if (s[i] == '#')
+		return (1);
+	return (0);
+}
+
+int			read_instruction(t_var *var)
 {
 	char	*s;
 
 	while (get_next_line(0, &s))
 	{
-		if (s[0] == '#')
-			while (check_comment_adn_command(s, var) == 1)
-				get_next_line(0, &s);
-		if (var->grup_valid == 0 && !var->start)
+		var->bon.count_line++;
+		if (var->comand && var->grup_valid == 2)
+			var->error = -13;
+		else if (!var->error && validate_str(s, var) > 0)
+			check_comment_adn_command(s, var);
+		else if (!var->error && var->grup_valid == 0)
 			read_instruction_ants(s, var);
-		else if (var->grup_valid == 1 && var->error == 0)
-		{
+		else if (!var->error && var->grup_valid == 1)
 			read_instruction_room(s, var);
-		}
-		if (var->grup_valid == 2 && !var->start && var->error > -1)
-		{
+		else if (!var->error && var->grup_valid == 2)
 			read_instruction_move(s, var);
-		}
 		if (var->error)
-			return (var->error);
-		free(s);
-		s = NULL;
+		{
+			ft_errors(var);
+			var->error = 0;
+		}
+		add_string_txt(s, &var->txt);
 	}
 	return (0);
 }

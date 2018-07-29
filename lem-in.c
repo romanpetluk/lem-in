@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lem-in.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rpetluk <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/07/21 16:06:14 by rpetluk           #+#    #+#             */
+/*   Updated: 2018/07/21 16:08:05 by rpetluk          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "lem-in.h"
 
@@ -9,141 +20,103 @@ static int		ft_init(t_var **var)
 		return (0);
 	temp->rooms = NULL;
 	temp->moves = NULL;
+	temp->txt = NULL;
 	temp->ants = 0;
-	temp->start = 0;
+	temp->comand = 0;
 	temp->error = 0;
 	temp->start_count = 0;
 	temp->end_count = 0;
 	temp->grup_valid = 0;
+	temp->bon.count_line = 0;
+	temp->bon.error_key = 0;
+	temp->bon.error_line = 0;
+	temp->bon.way = 0;
+	temp->bon.count_iter = 0;
 	*var = temp;
 	return (1);
 }
 
-//void write_room(t_rooms *rooms)
-//{
-//	ft_printf("ASD\n");
-//	while (rooms && rooms->stat != 4)
-//		rooms = rooms->next;
-//	ft_printf("ASD\n");
-//	while (rooms)
-//	{
-//		ft_printf("rooms %s", rooms->name);
-//		rooms = rooms->prev;
-//		if (rooms)
-//			ft_printf(" ->");
-//	}
-//}
-
-void add_way(t_rooms *room, t_way **way)
+static int		add_way(t_rooms *room, t_way **way)
 {
-	t_way *tway;
+	t_way		*tway;
+	int			count;
 
-	tway = *way;
-	if (tway)
-	{
-		ft_printf("QWE\n");
-		ft_printf("ASD\n");
-		while (tway->next_way)
-			tway = tway->next_way;
-	}
-	while (room->stat != 4)
+	count = 0;
+	tway = NULL;
+	while (room->start != 4)
 		room = room->next;
-
+	if (!room->prev)
+		return (0);
 	while (room)
 	{
-		ft_newlist_way(&tway);
-		room->stat = 3;
-		tway->room = room;
+		ft_newlist_way(&tway, room);
+		if (room->start)
+			room->stat = room->start;
+		else
+			room->stat = 5;
 		room = room->prev;
+		count++;
 	}
-	if (!*way)
-		*way = tway;
-}
-//static void reset_stat_room(t_rooms *rooms)
-//{
-//	while (rooms)
-//	{
-//		if (rooms->stat == 2)
-//			rooms->stat = 0;
-//		rooms = rooms->next;
-//	}
-//}
-
-void way_list(t_way *way)
-{
-	t_way *tway;
-
-	while (way)
-	{
-		tway = way;
-		while (tway)
-		{
-//		way->rooms->stat = status;
-			ft_printf("rooms %s", tway->room->name);
-			tway = tway->next_room;
-			if (tway)
-				ft_printf(" ->");
-		}
-		ft_printf("\n");
-		way = way->next_way;
-	}
+	tway->distance = count;
+	if (*way)
+		tway->next_way = *way;
+	*way = tway;
+	return (1);
 }
 
-void check_start(t_rooms *rooms)
+static void		reset_stat_room(t_rooms *rooms)
 {
 	while (rooms)
 	{
-		ft_printf("ROOM %s start %d \n",rooms->name ,rooms->start);
+		rooms->prev = NULL;
+		rooms->lenmove = 2147483647;
+		if (rooms->stat < 3)
+			rooms->stat = 0;
 		rooms = rooms->next;
 	}
 }
 
-int main(void)
+static void		write_txt(t_txt *txt)
 {
-	t_var *var;
-	t_way *way;
+	t_txt *temp;
+
+	while (txt)
+	{
+		temp = txt->next;
+		ft_printf("%s\n", txt->string);
+		free(txt->string);
+		txt->string = NULL;
+		free(txt);
+		txt = temp;
+	}
+	temp = NULL;
+	txt = NULL;
+	ft_printf("\n");
+}
+
+int				main(int argc, char **argv)
+{
+	t_var		*var;
+	t_way		*way;
 
 	way = NULL;
 	ft_init(&var);
+	if (argc != 1)
+		ft_bonus(var, argc, argv);
 	read_instruction(var);
-//	if (var->error != 0)
-//	{
-//		if (var->error == -1)
-//			ft_printf("ants\n");
-//		else if (var->error == -1)
-//			ft_printf("ants\n");
-//		else if (var->error == -1)
-//			ft_printf("ants\n");
-//		else if (var->error == -1)
-//			ft_printf("ants\n");
-//		return (0);
-//	}
-
-//	check_start(var->rooms);
-
-	algorithm(var);
-	add_way(var->rooms, &way);
-	//reset_stat_room(var->rooms);
-	way_list(way);
-//
-//	//algorithm(var);
-//	way_list(way);
-
-	//add_way(var->rooms, &way);
-//	write_room(var->rooms);
-
-
-	ft_printf("ants = %d\n\n", var->ants);
-	while (var->moves)
+	validate_instruction(var);
+	while (algorithm(var))
 	{
-		ft_printf("name == %s\tname next == %s\n", var->moves->name, var->moves->name_next);
-		var->moves = var->moves->next;
+		add_way(var->rooms, &way);
+		reset_stat_room(var->rooms);
 	}
-	ft_printf("\n");
-	while (var->rooms)
+	if (!way)
 	{
-		ft_printf("name == %s\tx == %d\t\ty == %d\t\tstat == %d\tlenm == %d\n", var->rooms->name, var->rooms->x, var->rooms->y, var->rooms->stat,
-				  var->rooms->lenmove);
-		var->rooms = var->rooms->next;
+		var->error = -18;
+		ft_errors(var);
 	}
+	write_txt(var->txt);
+	ants_move(var->ants, way, var->bon.count_iter);
+	ft_free_way(way, var);
+	//system("leaks lem-in");
 }
